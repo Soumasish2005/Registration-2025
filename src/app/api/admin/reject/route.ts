@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 
 export async function POST(request: Request) {
   try {
-    const { id, remarks } = await request.json();
+    const { id } = await request.json();
     if (!id) return NextResponse.json({ error: "Missing registration id" }, { status: 400 });
     await prisma.registration.update({
       where: { id },

@@ -1,23 +1,35 @@
+
 import { useState, useEffect } from "react";
 import styles from "./admin.module.css";
 
-type EventType = "SOLO" | "TEAM";
-type EventStatus = "Draft" | "Published";
+type Team = { name: string };
+type Event = {
+  id: string;
+  name: string;
+  type: "SOLO" | "TEAM";
+  isActive: boolean;
+  teams?: Team[];
+};
+type EventForm = {
+  name: string;
+  type: "SOLO" | "TEAM";
+  status: "Draft" | "Published";
+  teams: string[];
+};
 
-export default function EventsManager() {
-  const [events, setEvents] = useState<any[]>([]);
+  const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string|null>(null);
-  const [form, setForm] = useState({ name: "", type: "SOLO", status: "Draft", teams: [""] });
+  const [form, setForm] = useState<EventForm>({ name: "", type: "SOLO", status: "Draft", teams: [""] });
 
   useEffect(() => {
     fetch("/api/admin/events")
       .then(r => r.json())
-      .then(data => setEvents(data.events))
+      .then(data => setEvents(data.events as Event[]))
       .catch(() => setError("Failed to load events"));
   }, []);
 
-  const handleFormChange = (field: string, value: any) => {
+  const handleFormChange = (field: keyof EventForm, value: string) => {
     setForm(f => ({ ...f, [field]: value }));
   };
 
@@ -39,10 +51,10 @@ export default function EventsManager() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to create event");
-      setEvents([data.event, ...events]);
+      setEvents([data.event as Event, ...events]);
       setForm({ name: "", type: "SOLO", status: "Draft", teams: [""] });
-    } catch (e: any) {
-      setError(e.message || "Failed to create event");
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Failed to create event");
     } finally {
       setLoading(false);
     }
@@ -50,28 +62,28 @@ export default function EventsManager() {
 
   // Edit state
   const [editId, setEditId] = useState<string|null>(null);
-  const [editForm, setEditForm] = useState<any>(null);
+  const [editForm, setEditForm] = useState<EventForm|null>(null);
 
-  const startEdit = (ev: any) => {
+  const startEdit = (ev: Event) => {
     setEditId(ev.id);
     setEditForm({
       name: ev.name,
       type: ev.type,
       status: ev.isActive ? "Published" : "Draft",
-      teams: ev.teams?.map((t: any) => t.name) || [""]
+      teams: ev.teams?.map((t) => t.name) || [""]
     });
   };
-  const handleEditChange = (field: string, value: any) => {
-    setEditForm((f: any) => ({ ...f, [field]: value }));
+  const handleEditChange = (field: keyof EventForm, value: string) => {
+    setEditForm((f) => f ? { ...f, [field]: value } : null);
   };
   const handleEditTeamChange = (idx: number, value: string) => {
-    setEditForm((f: any) => ({ ...f, teams: f.teams.map((t: string, i: number) => i === idx ? value : t) }));
+    setEditForm((f) => f ? { ...f, teams: f.teams.map((t, i) => i === idx ? value : t) } : null);
   };
-  const addEditTeam = () => setEditForm((f: any) => ({ ...f, teams: [...f.teams, ""] }));
-  const removeEditTeam = (idx: number) => setEditForm((f: any) => ({ ...f, teams: f.teams.filter((_: any, i: number) => i !== idx) }));
+  const addEditTeam = () => setEditForm((f) => f ? { ...f, teams: [...f.teams, ""] } : null);
+  const removeEditTeam = (idx: number) => setEditForm((f) => f ? { ...f, teams: f.teams.filter((_, i) => i !== idx) } : null);
 
   const submitEdit = async () => {
-    if (!editId) return;
+    if (!editId || !editForm) return;
     setLoading(true);
     setError(null);
     try {
@@ -82,11 +94,11 @@ export default function EventsManager() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to update event");
-      setEvents(events.map(ev => ev.id === editId ? { ...ev, ...data.event, teams: editForm.teams.map((name: string) => ({ name })) } : ev));
+      setEvents(events.map(ev => ev.id === editId ? { ...ev, ...data.event, teams: editForm.teams.map((name) => ({ name })) } : ev));
       setEditId(null);
       setEditForm(null);
-    } catch (e: any) {
-      setError(e.message || "Failed to update event");
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Failed to update event");
     } finally {
       setLoading(false);
     }
@@ -103,8 +115,8 @@ export default function EventsManager() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to delete event");
       setEvents(events.filter(ev => ev.id !== id));
-    } catch (e: any) {
-      setError(e.message || "Failed to delete event");
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Failed to delete event");
     } finally {
       setLoading(false);
     }

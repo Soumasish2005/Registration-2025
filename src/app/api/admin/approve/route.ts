@@ -5,7 +5,7 @@ export async function POST(request: Request) {
   try {
     const { id } = await request.json();
     if (!id) return NextResponse.json({ error: "Missing registration id" }, { status: 400 });
-    const updated = await prisma.registration.update({
+    await prisma.registration.update({
       where: { id },
       data: { status: "APPROVED" }
     });

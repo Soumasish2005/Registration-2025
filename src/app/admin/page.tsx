@@ -6,11 +6,26 @@ import AdminLogin from "./login";
 import AdminSidebar from "./sidebar";
 import EventsManager from "./events";
 
+type Registration = {
+  id: string;
+  participant: {
+    fullName: string;
+    phoneNumber: string;
+    governmentId: string;
+    governmentIdType: string;
+    email?: string;
+  };
+  soloEventId?: string;
+  soloEvent?: { name: string };
+  team?: { name: string; event: { name: string } };
+  updatedAt: string;
+};
+
 export default function AdminPanel() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [section, setSection] = useState("events");
-  const [pending, setPending] = useState<any[]>([]);
-  const [approved, setApproved] = useState<any[]>([]);
+  const [pending, setPending] = useState<Registration[]>([]);
+  const [approved, setApproved] = useState<Registration[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string|null>(null);
 
@@ -41,8 +56,8 @@ export default function AdminPanel() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to approve");
       setPending(pending.filter(r => r.id !== id));
-    } catch (e: any) {
-      setError(e.message || "Failed to approve");
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Failed to approve");
     } finally {
       setLoading(false);
     }
@@ -60,8 +75,8 @@ export default function AdminPanel() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to reject");
       setPending(pending.filter(r => r.id !== id));
-    } catch (e: any) {
-      setError(e.message || "Failed to reject");
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Failed to reject");
     } finally {
       setLoading(false);
     }

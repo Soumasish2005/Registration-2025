@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import styles from "./admin.module.css";
 import AdminLogin from "./login";
 import AdminSidebar from "./sidebar";
+import EventsManager from "./events";
 
 export default function AdminPanel() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -77,13 +78,7 @@ export default function AdminPanel() {
     <div style={{ display: "flex", minHeight: "100vh" }}>
       <AdminSidebar section={section} setSection={setSection} />
       <div style={{ flex: 1, marginLeft: 180 }}>
-        {section === "events" && (
-          <div className={styles.wrapper}>
-            <h1 className={styles.title}>Event Management</h1>
-            {/* Event management UI will go here */}
-            <div>Coming soon: Add/Edit/Delete/Submit Events</div>
-          </div>
-        )}
+        {section === "events" && <EventsManager />}
         {section === "pending" && (
           <div className={styles.wrapper}>
             <h1 className={styles.title}>Pending Registrations</h1>

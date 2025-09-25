@@ -50,9 +50,17 @@ export async function POST(request: Request) {
     });
 
     return NextResponse.json({ id: registration.id, status: registration.status });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    let details = "";
+    if (error instanceof Error) {
+      details = error.message;
+    } else if (typeof error === "string") {
+      details = error;
+    } else {
+      details = JSON.stringify(error);
+    }
     console.error("Registration error:", error);
-    return NextResponse.json({ error: "Failed to submit registration", details: error?.message || error?.toString() }, { status: 500 });
+    return NextResponse.json({ error: "Failed to submit registration", details }, { status: 500 });
   }
 }
 

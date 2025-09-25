@@ -67,7 +67,7 @@ model Team {
 model Participant {
   id             String           @id @default(cuid())
   fullName       String
-  phoneNumber    String
+  phoneNumber    String           @unique
   governmentId   String
   governmentIdType GovernmentIdType
   email          String?

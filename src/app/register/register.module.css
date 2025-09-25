@@ -1,0 +1,125 @@
+/* Attractive styles for the /register page */
+
+.wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+  color: #222;
+}
+
+.card {
+  width: 100%;
+  max-width: 600px;
+  background: #fff;
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 32px rgba(60, 60, 120, 0.08);
+  border: 1px solid #e5e7eb;
+  padding: 2rem;
+}
+
+.header {
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #3730a3;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: #6366f1;
+  margin-top: 0.5rem;
+}
+
+.form {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.label {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #3730a3;
+}
+
+.input, .select {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid #c7d2fe;
+  background: #f1f5f9;
+  font-size: 1rem;
+  color: #111;
+  transition: border 0.2s;
+}
+.input:focus, .select:focus {
+  border-color: #6366f1;
+  outline: none;
+}
+
+.button {
+  background: linear-gradient(90deg, #6366f1 0%, #3730a3 100%);
+  color: #fff;
+  font-weight: 600;
+  padding: 0.75rem 2rem;
+  border-radius: 0.75rem;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.button:disabled {
+  background: #a5b4fc;
+  cursor: not-allowed;
+}
+
+.error {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+.success {
+  background: #d1fae5;
+  color: #065f46;
+  border: 1px solid #6ee7b7;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+.steps {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.step {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  background: #e0e7ff;
+  color: #3730a3;
+}
+.step.active {
+  background: #6366f1;
+  color: #fff;
+}
+.separator {
+  color: #a5b4fc;
+  font-size: 1.5rem;
+}

@@ -38,7 +38,7 @@ export async function POST() {
     }
 
     return NextResponse.json({ ok: true });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Seeding failed" }, { status: 500 });
   }
 }

@@ -13,7 +13,7 @@ export async function GET() {
       orderBy: { name: "asc" }
     });
     return NextResponse.json({ soloEvents, teamEvents });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Failed to load events" }, { status: 500 });
   }
 }

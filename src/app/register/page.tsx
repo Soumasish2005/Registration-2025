@@ -83,8 +83,12 @@ export default function RegisterPage() {
       if (!res.ok) throw new Error(data.error || "Submission failed");
       setSuccessId(data.id);
       setStep(3);
-    } catch (e: any) {
-      setError(e.message || "Submission failed");
+    } catch (e) {
+      if (e instanceof Error) {
+        setError(e.message || "Submission failed");
+      } else {
+        setError("Submission failed");
+      }
     } finally {
       setLoading(false);
     }

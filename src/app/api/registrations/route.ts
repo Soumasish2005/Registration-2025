@@ -50,7 +50,7 @@ export async function POST(request: Request) {
     });
 
     return NextResponse.json({ id: registration.id, status: registration.status });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Failed to submit registration" }, { status: 500 });
   }
 }

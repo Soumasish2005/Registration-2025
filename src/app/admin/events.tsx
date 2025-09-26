@@ -1,4 +1,5 @@
 
+
 import { useState, useEffect } from "react";
 import styles from "./admin.module.css";
 
@@ -17,6 +18,7 @@ type EventForm = {
   teams: string[];
 };
 
+export default function EventsPage() {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string|null>(null);
@@ -168,7 +170,7 @@ type EventForm = {
         ) : (
           events.map(ev => (
             <div key={ev.id} className={styles.card}>
-              {editId === ev.id ? (
+              {editId === ev.id && editForm ? (
                 <form className={styles.form} onSubmit={e => { e.preventDefault(); submitEdit(); }}>
                   <div>
                     <label className={styles.label}>Event Name</label>
@@ -211,7 +213,7 @@ type EventForm = {
                   <div><b>Type:</b> {ev.type}</div>
                   <div><b>Status:</b> {ev.isActive ? "Published" : "Draft"}</div>
                   {ev.teams && ev.teams.length > 0 && (
-                    <div><b>Teams:</b> {ev.teams.map((t: any) => t.name).join(", ")}</div>
+                    <div><b>Teams:</b> {ev.teams.map((t: Team) => t.name).join(", ")}</div>
                   )}
                   <div style={{marginTop:8}}>
                     <button className={styles.button} onClick={() => startEdit(ev)}>Edit</button>

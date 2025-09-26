@@ -46,7 +46,7 @@ type EventsResponse = {
                   <div>
                     <h3 className="font-medium mb-1">Solo Events</h3>
                     <ul className="list-disc ml-5 text-sm">
-                      {events?.soloEvents.length
+                      {Array.isArray(events?.soloEvents) && events.soloEvents.length > 0
                         ? events.soloEvents.map((ev) => <li key={ev.id}>{ev.name}</li>)
                         : <li className="text-neutral-400">No solo events available</li>}
                     </ul>
@@ -54,11 +54,11 @@ type EventsResponse = {
                   <div>
                     <h3 className="font-medium mb-1">Team Events</h3>
                     <ul className="list-disc ml-5 text-sm">
-                      {events?.teamEvents.length
+                      {Array.isArray(events?.teamEvents) && events.teamEvents.length > 0
                         ? events.teamEvents.map((ev) => (
                             <li key={ev.id}>
                               {ev.name}
-                              {ev.teams.length > 0 && (
+                              {Array.isArray(ev.teams) && ev.teams.length > 0 && (
                                 <ul className="list-circle ml-4 text-xs text-neutral-600">
                                   {ev.teams.map((team) => (
                                     <li key={team.id}>{team.name}</li>
